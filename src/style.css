@@ -1,0 +1,9 @@
+@font-face {
+    font-family: "hack-nerd-font";
+    src: local("hack-nerd-font"),
+        url(fonts/Hack Regular Nerd Font Complete Mono.ttf) format("truetype");
+}
+
+* {
+    font-family: "hack-nerd-font";
+}
