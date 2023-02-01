@@ -1,0 +1,7 @@
+- [x] trigger open with shortcut (current shortcut: ctrl+shift+u)
+- [x] markdown input
+- [x] toggle markdown preview button
+- [ ] fix style
+- [ ] add toolbar
+- [ ] sync with server
+- [ ] add mobile support
