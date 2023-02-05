@@ -1,6 +1,8 @@
 - [x] trigger open with shortcut (current shortcut: ctrl+shift+u)
 - [x] markdown input
 - [x] toggle markdown preview button
+- [ ] Save to tmp file
+- [ ] Save to file
 - [ ] fix style
 - [ ] add toolbar
 - [ ] sync with server
