@@ -1,0 +1,15 @@
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+table tr {
+    background-color: #ffffff;
+    border-top: 1px solid #d0d7de;
+}
+
+table th,
+table td {
+    border: 1px solid #444c56;
+    padding: 6px 13px;
+}
