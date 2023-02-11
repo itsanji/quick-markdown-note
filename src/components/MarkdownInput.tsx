@@ -31,8 +31,7 @@ const MarkDownInput: React.FC<MarkDownInputProps> = ({
         if (isEdit && textareaRef.current) {
             textareaRef.current.focus();
             // move cursor to end
-            textareaRef.current.selectionStart =
-                textareaRef.current.value.length;
+            textareaRef.current.selectionStart = textareaRef.current.value.length;
         }
     }, [isEdit]);
 
