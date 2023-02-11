@@ -1,6 +1,7 @@
-import React, { CSSProperties, useEffect, useRef, useState } from "react";
+import React, { CSSProperties, useContext, useEffect, useRef, useState } from "react";
 import { VscEdit, VscPreview } from "react-icons/vsc";
 import MarkdownCore from "./MarkdownCore";
+import { GlobalContext } from "../context/GlobalContext";
 
 interface MarkDownInputProps {
     children?: React.ReactNode;
@@ -25,21 +26,20 @@ const MarkDownInput: React.FC<MarkDownInputProps> = ({
     const [isEdit, setIsEdit] = useState(defaultMode === "edit" ? true : false);
     const isBlurEvent = useRef(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const [fontSize, setFontSize] = useState(20);
+    const globalContext = useContext(GlobalContext);
 
     // Change apps font size with ctrl + [] keys
     useEffect(() => {
         function changeFontSize(evt: KeyboardEvent) {
             const { key } = evt;
-            if (evt.ctrlKey || evt.metaKey) {
-                console.log("ctrl + key pressed", key);
+            if ((evt.ctrlKey || evt.metaKey) && textareaRef.current) {
                 if (key === "]") {
                     evt.preventDefault();
-                    setFontSize((prev) => prev + 1);
+                    globalContext.updateFontSize((prev) => prev + 1);
                 }
                 if (key === "[") {
                     evt.preventDefault();
-                    setFontSize((prev) => prev - 1);
+                    globalContext.updateFontSize((prev) => prev - 1);
                 }
             }
         }
@@ -48,12 +48,6 @@ const MarkDownInput: React.FC<MarkDownInputProps> = ({
             document.removeEventListener("keydown", changeFontSize);
         };
     }, []);
-
-    useEffect(() => {
-        if (textareaRef.current) {
-            textareaRef.current.style.fontSize = `${fontSize}px`;
-        }
-    }, [fontSize]);
 
     // Focus on textarea when edit mode
     useEffect(() => {
@@ -112,6 +106,7 @@ const MarkDownInput: React.FC<MarkDownInputProps> = ({
                             padding: "10px 5px 5px 5px",
                             width: "100%",
                             minHeight: 150,
+                            fontSize: globalContext.fontSize,
                             ...inputStyle,
                         }}
                     ></textarea>
@@ -122,6 +117,7 @@ const MarkDownInput: React.FC<MarkDownInputProps> = ({
                             minHeight: 150,
                             padding: 5,
                             height: "100%",
+                            fontSize: globalContext.fontSize,
                         }}
                         onClick={() => {
                             setIsEdit(true);

@@ -13,3 +13,11 @@ table td {
     border: 1px solid #444c56;
     padding: 6px 13px;
 }
+
+/* remove textare border */
+textarea {
+    border: none;
+}
+textarea:focus {
+    outline: none;
+}

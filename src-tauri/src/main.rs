@@ -8,6 +8,8 @@ use tauri::{GlobalShortcutManager, Manager};
 use tauri_plugin_positioner::{Position, WindowExt};
 
 fn main() {
+    let default_shortcut = "CommandOrControl+Shift+O";
+
     tauri::Builder::default()
         .plugin(tauri_plugin_positioner::init())
         .on_window_event(|event| match event.event() {
@@ -27,7 +29,7 @@ fn main() {
                 // register shortcuts
                 app_handle
                     .global_shortcut_manager()
-                    .register("CommandOrControl+Shift+U", move || {
+                    .register(default_shortcut, move || {
                         for (title, window) in app_handle.windows() {
                             println!("{}", title);
                             window.open_devtools();
