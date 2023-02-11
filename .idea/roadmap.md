@@ -7,3 +7,4 @@
 - [ ] add toolbar
 - [ ] sync with server
 - [ ] add mobile support
+- [ ] Logs

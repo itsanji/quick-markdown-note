@@ -43,6 +43,22 @@
                 "startDragging": false,
                 "unmaximize": false,
                 "unminimize": false
+            },
+            "fs": {
+                "all": true,
+                "copyFile": false,
+                "createDir": false,
+                "exists": false,
+                "readDir": false,
+                "readFile": false,
+                "removeDir": false,
+                "removeFile": false,
+                "renameFile": false,
+                "scope": ["$HOME/.config/qmnote"],
+                "writeFile": false
+            },
+            "path": {
+                "all": true
             }
         },
         "bundle": {
@@ -53,13 +69,7 @@
                 "depends": []
             },
             "externalBin": [],
-            "icon": [
-                "icons/32x32.png",
-                "icons/128x128.png",
-                "icons/128x128@2x.png",
-                "icons/icon.icns",
-                "icons/icon.ico"
-            ],
+            "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
             "identifier": "net.umakase",
             "longDescription": "",
             "macOS": {
@@ -89,7 +99,7 @@
                 "fullscreen": false,
                 "height": 600,
                 "resizable": true,
-                "title": "quick-mardown-note",
+                "title": "Quick Markdown Note",
                 "width": 500
             }
         ]
