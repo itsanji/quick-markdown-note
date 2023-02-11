@@ -7,9 +7,10 @@ interface ToolBarProps {
 }
 
 const ToolBar: React.FC<ToolBarProps> = ({}) => {
-    const { isEditMode, setIsEditMode } = useContext(GlobalContext);
+    const { isEditMode, setIsEditMode, fontSize } = useContext(GlobalContext);
     return (
-        <div>
+        <div style={{ display: "flex", justifyContent: "space-between" }} className="toolbar">
+            <button>{fontSize}</button>
             <button
                 type="button"
                 onClick={() => {

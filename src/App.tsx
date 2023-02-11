@@ -6,21 +6,22 @@ import MainApp from "./components/MainApp";
 import { GlobalContext } from "./context/GlobalContext";
 import ToolBar from "./components/ToolBar";
 
+// ANCHOR hide app instead of close
+async function hideAppInsteadOfClose(evt: KeyboardEvent) {
+    const { key } = evt;
+    if ((evt.metaKey && key === "q") || (evt.ctrlKey && key === "w")) {
+        console.log("hide app instead of close");
+        evt.preventDefault();
+        appWindow.hide();
+    }
+}
+
 function App() {
     const [fontSize, setFontSize] = useState(20);
     const [isEditMode, setIsEditMode] = useState(false);
+
     // SECTION App setups
     useEffect(() => {
-        // ANCHOR hide app instead of close
-        async function hideAppInsteadOfClose(evt: KeyboardEvent) {
-            const { key } = evt;
-            if ((evt.metaKey && key === "q") || (evt.ctrlKey && key === "w")) {
-                console.log("hide app instead of close");
-                evt.preventDefault();
-                appWindow.hide();
-            }
-        }
-
         // ANCHOR Change apps font size with ctrl + [] keys
         function changeFontSize(evt: KeyboardEvent) {
             const { key } = evt;
@@ -36,7 +37,7 @@ function App() {
             }
         }
 
-        // change to view mode when app is not focused
+        // ANCHOR change to view mode when app is not focused
         const unlisten = appWindow.onFocusChanged(({ payload: focused }) => {
             if (!focused) {
                 setIsEditMode(false);
