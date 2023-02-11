@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
 import { appWindow } from "@tauri-apps/api/window";
 import "./App.css";
 import { moveWindow, Position } from "tauri-plugin-positioner-api";
@@ -13,14 +12,6 @@ function App() {
                 console.log("hide app instead of close");
                 evt.preventDefault();
                 appWindow.hide();
-                // await appWindow.onFocusChanged((event) => {
-                //     console.log(event);
-                //     if (!event.payload) {
-                //         invoke("close_window", {
-                //             windowLable: event.windowLabel,
-                //         });
-                //     }
-                // });
             }
         }
         moveWindow(Position.TopRight);

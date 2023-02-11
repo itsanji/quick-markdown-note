@@ -25,6 +25,35 @@ const MarkDownInput: React.FC<MarkDownInputProps> = ({
     const [isEdit, setIsEdit] = useState(defaultMode === "edit" ? true : false);
     const isBlurEvent = useRef(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [fontSize, setFontSize] = useState(20);
+
+    // Change apps font size with ctrl + [] keys
+    useEffect(() => {
+        function changeFontSize(evt: KeyboardEvent) {
+            const { key } = evt;
+            if (evt.ctrlKey || evt.metaKey) {
+                console.log("ctrl + key pressed", key);
+                if (key === "]") {
+                    evt.preventDefault();
+                    setFontSize((prev) => prev + 1);
+                }
+                if (key === "[") {
+                    evt.preventDefault();
+                    setFontSize((prev) => prev - 1);
+                }
+            }
+        }
+        document.addEventListener("keydown", changeFontSize);
+        return () => {
+            document.removeEventListener("keydown", changeFontSize);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.fontSize = `${fontSize}px`;
+        }
+    }, [fontSize]);
 
     // Focus on textarea when edit mode
     useEffect(() => {
@@ -83,7 +112,6 @@ const MarkDownInput: React.FC<MarkDownInputProps> = ({
                             border: "none",
                             padding: "10px 5px 5px 5px",
                             width: "100%",
-                            fontSize: 20,
                             minHeight: 150,
                             ...inputStyle,
                         }}

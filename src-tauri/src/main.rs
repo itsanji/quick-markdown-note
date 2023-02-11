@@ -30,6 +30,7 @@ fn main() {
                     .register("CommandOrControl+Shift+U", move || {
                         for (title, window) in app_handle.windows() {
                             println!("{}", title);
+                            window.open_devtools();
                             window.show().unwrap();
                             window.center().unwrap();
                             window.set_focus().unwrap();
