@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
 import { appWindow } from "@tauri-apps/api/window";
 import "./App.css";
 import { moveWindow, Position } from "tauri-plugin-positioner-api";
