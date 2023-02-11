@@ -1,3 +1,4 @@
+/* ANCHOR Add border to table */
 table {
     border-spacing: 0;
     border-collapse: collapse;
@@ -14,10 +15,38 @@ table td {
     padding: 6px 13px;
 }
 
-/* remove textare border */
+/* ANCHOR remove textare border */
 textarea {
     border: none;
 }
 textarea:focus {
     outline: none;
 }
+
+/* ANCHOR Fixed button style */
+button {
+    background-color: #e7ebf0;
+    color: #000000;
+    padding: 8px 12px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 8px 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #444c56;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: #444c56;
+    color: #ffffff;
+}
+/* *********************** */

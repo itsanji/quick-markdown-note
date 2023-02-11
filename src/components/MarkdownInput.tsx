@@ -8,55 +8,23 @@ interface MarkDownInputProps {
     value: string;
     onChange: (newValue: string) => void;
     style?: CSSProperties;
-    defaultMode?: "edit" | "view";
-    onChangeMode?: () => void;
     autofocus?: boolean;
     inputStyle?: CSSProperties;
 }
 
-const MarkDownInput: React.FC<MarkDownInputProps> = ({
-    value,
-    onChange,
-    style,
-    defaultMode = "view",
-    onChangeMode,
-    autofocus = false,
-    inputStyle = {},
-}) => {
-    const [isEdit, setIsEdit] = useState(defaultMode === "edit" ? true : false);
-    const isBlurEvent = useRef(false);
+const MarkDownInput: React.FC<MarkDownInputProps> = (props) => {
+    const { value, onChange, style, autofocus = false, inputStyle = {} } = props;
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const globalContext = useContext(GlobalContext);
-
-    // Change apps font size with ctrl + [] keys
-    useEffect(() => {
-        function changeFontSize(evt: KeyboardEvent) {
-            const { key } = evt;
-            if ((evt.ctrlKey || evt.metaKey) && textareaRef.current) {
-                if (key === "]") {
-                    evt.preventDefault();
-                    globalContext.updateFontSize((prev) => prev + 1);
-                }
-                if (key === "[") {
-                    evt.preventDefault();
-                    globalContext.updateFontSize((prev) => prev - 1);
-                }
-            }
-        }
-        document.addEventListener("keydown", changeFontSize);
-        return () => {
-            document.removeEventListener("keydown", changeFontSize);
-        };
-    }, []);
+    const { fontSize, isEditMode, setIsEditMode } = useContext(GlobalContext);
 
     // Focus on textarea when edit mode
     useEffect(() => {
-        if (isEdit && textareaRef.current) {
+        if (isEditMode && textareaRef.current) {
             textareaRef.current.focus();
             // move cursor to end
             textareaRef.current.selectionStart = textareaRef.current.value.length;
         }
-    }, [isEdit]);
+    }, [isEditMode]);
 
     return (
         <>
@@ -69,44 +37,18 @@ const MarkDownInput: React.FC<MarkDownInputProps> = ({
                     ...style,
                 }}
             >
-                <div className="togger">
-                    <button
-                        type="button"
-                        onClick={() => {
-                            if (!isBlurEvent.current) {
-                                setIsEdit(!isEdit);
-                            }
-                        }}
-                        style={{
-                            position: "absolute",
-                            top: 5,
-                            right: "50%",
-                            transform: "translateX(-50%)",
-                        }}
-                    >
-                        {isEdit ? <VscPreview /> : <VscEdit />}
-                    </button>
-                </div>
-                {isEdit ? (
+                {isEditMode ? (
                     <textarea
                         ref={textareaRef}
                         autoFocus={autofocus}
                         value={value}
                         onChange={(e) => onChange(e.currentTarget.value)}
-                        onBlur={() => {
-                            isBlurEvent.current = true;
-                            setTimeout(() => {
-                                isBlurEvent.current = false;
-                            }, 500);
-                            setIsEdit(false);
-                            onChangeMode && onChangeMode();
-                        }}
                         style={{
                             border: "none",
                             padding: "10px 5px 5px 5px",
                             width: "100%",
                             minHeight: 150,
-                            fontSize: globalContext.fontSize,
+                            fontSize: fontSize,
                             ...inputStyle,
                         }}
                     ></textarea>
@@ -117,10 +59,10 @@ const MarkDownInput: React.FC<MarkDownInputProps> = ({
                             minHeight: 150,
                             padding: 5,
                             height: "100%",
-                            fontSize: globalContext.fontSize,
+                            fontSize: fontSize,
                         }}
                         onClick={() => {
-                            setIsEdit(true);
+                            setIsEditMode(true);
                         }}
                     >
                         <MarkdownCore>{value}</MarkdownCore>
