@@ -1,10 +1,14 @@
+import "./App.css";
+import "react-toastify/dist/ReactToastify.min.css";
 import { useEffect, useState } from "react";
 import { appWindow } from "@tauri-apps/api/window";
-import "./App.css";
 import { moveWindow, Position } from "tauri-plugin-positioner-api";
 import MainApp from "./components/MainApp";
 import { GlobalContext } from "./context/GlobalContext";
 import ToolBar from "./components/ToolBar";
+import { homeDir } from "@tauri-apps/api/path";
+import { configFolder } from "./utils/utils";
+import { toast } from "react-toastify";
 
 // ANCHOR hide app instead of close
 async function hideAppInsteadOfClose(evt: KeyboardEvent) {
@@ -22,6 +26,11 @@ function App() {
 
     // SECTION App setups
     useEffect(() => {
+        configFolder(homeDir()).catch(() => {
+            toast("Error Occur. File won't be saved. Check $HOME/.config/qmnote your permission.", {
+                type: "error",
+            });
+        });
         // ANCHOR Change apps font size with ctrl + [] keys
         function changeFontSize(evt: KeyboardEvent) {
             const { key } = evt;
@@ -44,11 +53,20 @@ function App() {
             }
         });
 
+        // ANCHOR toggle edit/view mode with esc key
+        const escListener = (evt: KeyboardEvent) => {
+            if (evt.key === "Escape") {
+                setIsEditMode((prev) => !prev);
+            }
+        };
+
         // ANCHOR move window to top right corner
         moveWindow(Position.TopRight);
+        document.addEventListener("keydown", escListener);
         document.addEventListener("keydown", hideAppInsteadOfClose);
         document.addEventListener("keydown", changeFontSize);
         return () => {
+            document.removeEventListener("keydown", escListener);
             document.removeEventListener("keydown", changeFontSize);
             document.removeEventListener("keydown", hideAppInsteadOfClose);
             unlisten.then((f) => f());
@@ -63,6 +81,7 @@ function App() {
                 updateFontSize: setFontSize,
                 isEditMode,
                 setIsEditMode,
+                homeDir: homeDir(),
             }}
         >
             <div className="container">
