@@ -1,0 +1,8 @@
+# This is default config file for qmnote 
+
+# Save dir is relative to $HOME directory. absolute path is NOT supported. (permission issue)
+storage = "qmnote/"
+
+# Show window shortcut
+shortcut = "CommandOrControl+Shift+O"
+
