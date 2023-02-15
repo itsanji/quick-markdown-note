@@ -8,3 +8,4 @@
 - [ ] sync with server
 - [ ] add mobile support
 - [ ] Logs
+- [ ] VIM movement key

@@ -9,7 +9,6 @@ const MainApp: React.FC = () => {
                 value={text}
                 onChange={(value) => setText(value)}
                 style={{
-                    width: "100vw",
                     height: "100vh",
                 }}
                 inputStyle={{

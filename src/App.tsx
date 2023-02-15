@@ -53,10 +53,10 @@ function App() {
             }
         });
 
-        // ANCHOR change to view mode on ESC key
+        // ANCHOR toggle edit/view mode with esc key
         const escListener = (evt: KeyboardEvent) => {
             if (evt.key === "Escape") {
-                setIsEditMode(false);
+                setIsEditMode((prev) => !prev);
             }
         };
 
