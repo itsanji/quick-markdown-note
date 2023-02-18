@@ -1,3 +1,4 @@
+use std::path::PathBuf;
 use std::{fs, path::Path};
 
 use home;
@@ -12,14 +13,14 @@ pub struct Config {
 pub fn get_config() -> Config {
     let home_dir = home::home_dir().unwrap();
     let home_dir = home_dir.to_str().unwrap();
+    let config_path = get_config_path(home_dir);
     // TODO: learn about to_owned
-    let mut path = String::from(home_dir).to_owned();
-    path.push_str("/.config/qmnote/config.toml");
-    println!("{}", path);
-    let config_file_path = Path::new(&path);
-    let contents = match fs::read_to_string(config_file_path) {
+    let contents = match fs::read_to_string(config_path) {
         Result::Ok(content) => content,
-        Result::Err(_) => return default_conf(),
+        Result::Err(err) => {
+            println!("{:?}", err);
+            return default_conf();
+        }
     };
     let configs = toml::from_str(&contents);
     match configs {
@@ -32,8 +33,24 @@ pub fn get_config() -> Config {
 }
 
 fn default_conf() -> Config {
+    println!("Geting default config");
     Config {
-        storage: String::from("qmnote/storage"),
+        storage: String::from("qmnote/"),
         shortcut: String::from("CommandOrControl+Shift+O"),
     }
+}
+
+#[cfg(target_os = "windows")]
+fn get_config_path(home_path: &str) -> PathBuf {
+    let mut path = String::from(home_path).to_owned();
+    path.push_str("\\.config\\qmnote\\config.toml");
+    let config_file_path = Path::new(&path);
+    config_file_path.to_owned()
+}
+
+#[cfg(all(target_os = "macos", target_os = "linux"))]
+fn get_config_path(home_path: &str) -> PathBuf {
+    let mut path = String::from(home_dir).to_owned();
+    path.push_str("/.config/qmnote/config.toml");
+    let config_file_path = Path::new(&path);
 }

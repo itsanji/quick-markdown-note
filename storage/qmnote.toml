@@ -6,3 +6,5 @@ storage = "qmnote/"
 # Show window shortcut
 shortcut = "CommandOrControl+Shift+O"
 
+# Font-size ( not working yet )
+

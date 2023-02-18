@@ -7,8 +7,6 @@ import MainApp from "./components/MainApp";
 import { GlobalContext } from "./context/GlobalContext";
 import ToolBar from "./components/ToolBar";
 import { homeDir } from "@tauri-apps/api/path";
-import { configFolder } from "./utils/utils";
-import { toast } from "react-toastify";
 
 // ANCHOR hide app instead of close
 async function hideAppInsteadOfClose(evt: KeyboardEvent) {
@@ -26,11 +24,6 @@ function App() {
 
     // SECTION App setups
     useEffect(() => {
-        configFolder(homeDir()).catch(() => {
-            toast("Error Occur. File won't be saved. Check $HOME/.config/qmnote your permission.", {
-                type: "error",
-            });
-        });
         // ANCHOR Change apps font size with ctrl + [] keys
         function changeFontSize(evt: KeyboardEvent) {
             const { key } = evt;
