@@ -6,6 +6,7 @@
 mod cmd;
 mod config;
 mod tmp_file;
+use config::Config;
 use tauri::{GlobalShortcutManager, Manager};
 use tauri_plugin_positioner::{Position, WindowExt};
 #[derive(Clone, serde::Serialize)]
@@ -15,6 +16,7 @@ struct Payload {
 
 #[derive(Default, Clone)]
 pub struct AppState {
+    app_conf: Config,
     temp_content: String,
 }
 
@@ -23,8 +25,9 @@ fn main() {
     let temp_file_content = tmp_file::get_temp_file_content(&app_conf);
     let app_state = AppState {
         temp_content: temp_file_content,
+        app_conf: app_conf.clone(),
     };
-    println!("{:?}", app_conf);
+
     tauri::Builder::default()
         .plugin(tauri_plugin_positioner::init())
         .on_window_event(|event| match event.event() {
@@ -39,7 +42,8 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             cmd::greet,
             cmd::close_window,
-            cmd::get_temp_content
+            cmd::get_temp_content,
+            cmd::temp_saving,
         ])
         .setup(|app| {
             #[cfg(debug_assertions)] // only include this code on debug builds

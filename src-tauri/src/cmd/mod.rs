@@ -1,6 +1,6 @@
 use tauri::{command, State};
 
-use crate::AppState;
+use crate::{tmp_file::save_to_tmp_file, AppState};
 
 #[command]
 pub fn greet(name: &str) -> String {
@@ -20,4 +20,15 @@ pub fn close_window(window_lable: &str, _app: tauri::AppHandle, window: tauri::W
 #[command]
 pub fn get_temp_content(app_state: State<'_, AppState>) -> String {
     app_state.temp_content.clone()
+}
+
+#[command]
+pub fn temp_saving(app_state: State<'_, AppState>, content: String) -> bool {
+    match save_to_tmp_file(&app_state.app_conf.storage, content) {
+        Err(why) => {
+            println!("{:?}", why);
+            false
+        }
+        Ok(_) => true,
+    }
 }

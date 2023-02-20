@@ -1,11 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import MarkDownInput from "./MarkdownInput";
 import { invoke } from "@tauri-apps/api";
 import ReactLoading from "react-loading";
+// TODO: Handle save loading
+import { updateToFile } from "../utils/utils";
+import { appWindow } from "@tauri-apps/api/window";
 
 const MainApp: React.FC = () => {
     const [text, setText] = React.useState<string>("");
     const [loading, setLoading] = React.useState<boolean>(true);
+    const timeout = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         const getTempText = async () => {
@@ -18,6 +22,33 @@ const MainApp: React.FC = () => {
 
         getTempText();
     }, []);
+
+    // update tmp file content
+    useEffect(() => {
+        // ANCHOR Update tmp file content when user stop typing for 1 second
+        if (!timeout.current) {
+            timeout.current = setTimeout(() => {
+                timeout.current = null;
+                updateToFile(text);
+            }, 1000);
+        } else {
+            clearTimeout(timeout.current);
+            // set up onther timeout with new text
+            timeout.current = setTimeout(() => {
+                timeout.current = null;
+                updateToFile(text);
+            }, 1000);
+        }
+
+        // ANCHOR update tmp file content when user close the app
+        const unlistener = appWindow.onCloseRequested(() => {
+            updateToFile(text);
+        });
+
+        return () => {
+            unlistener.then((f) => f());
+        };
+    }, [text]);
 
     return (
         <>

@@ -1,7 +1,6 @@
-import React, { CSSProperties, useContext, useEffect, useRef, useState } from "react";
+import React, { CSSProperties, useContext, useEffect, useRef } from "react";
 import MarkdownCore from "./MarkdownCore";
 import { GlobalContext } from "../context/GlobalContext";
-import { updateToFile } from "../utils/utils";
 
 interface MarkDownInputProps {
     children?: React.ReactNode;
@@ -15,8 +14,7 @@ interface MarkDownInputProps {
 const MarkDownInput: React.FC<MarkDownInputProps> = (props) => {
     const { value, onChange, style, autofocus = false, inputStyle = {} } = props;
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const { fontSize, isEditMode, setIsEditMode, homeDir } = useContext(GlobalContext);
-    const timeout = useRef<NodeJS.Timeout | null>(null);
+    const { fontSize, isEditMode, setIsEditMode } = useContext(GlobalContext);
 
     // Focus on textarea when edit mode
     useEffect(() => {
@@ -44,17 +42,6 @@ const MarkDownInput: React.FC<MarkDownInputProps> = (props) => {
                         autoFocus={autofocus}
                         value={value}
                         onChange={(e) => {
-                            if (!timeout.current) {
-                                timeout.current = setTimeout(() => {
-                                    timeout.current = null;
-                                    console.log("cool");
-                                    // update file
-                                    updateToFile(homeDir, value);
-                                }, 500);
-                            } else {
-                                clearTimeout(timeout.current);
-                                timeout.current = null;
-                            }
                             onChange(e.currentTarget.value);
                         }}
                         style={{
