@@ -48,9 +48,10 @@ fn get_config_path(home_path: &str) -> PathBuf {
     config_file_path.to_owned()
 }
 
-#[cfg(all(target_os = "macos", target_os = "linux"))]
+#[cfg(any(target_os = "macos", target_os = "linux"))]
 fn get_config_path(home_path: &str) -> PathBuf {
-    let mut path = String::from(home_dir).to_owned();
+    let mut path = String::from(home_path).to_owned();
     path.push_str("/.config/qmnote/config.toml");
     let config_file_path = Path::new(&path);
+    config_file_path.to_owned()
 }

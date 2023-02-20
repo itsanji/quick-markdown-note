@@ -18,6 +18,6 @@ pub fn close_window(window_lable: &str, _app: tauri::AppHandle, window: tauri::W
 }
 
 #[command]
-pub fn get_tmp_content(app_state: State<'_, AppState>) -> String {
+pub fn get_temp_content(app_state: State<'_, AppState>) -> String {
     app_state.temp_content.clone()
 }

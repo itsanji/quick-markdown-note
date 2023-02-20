@@ -39,8 +39,17 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             cmd::greet,
             cmd::close_window,
-            cmd::get_tmp_content
+            cmd::get_temp_content
         ])
+        .setup(|app| {
+            #[cfg(debug_assertions)] // only include this code on debug builds
+            {
+                let window = app.get_window("main").unwrap();
+                window.open_devtools();
+                // window.close_devtools();
+            }
+            Ok(())
+        })
         .build(tauri::generate_context!())
         .expect("error while building tauri application")
         .run(move |app_handle, event| match event {
@@ -53,7 +62,6 @@ fn main() {
                     .register(app_conf.shortcut.as_str(), move || {
                         for (title, window) in app_handle.windows() {
                             println!("{}", title);
-                            window.open_devtools();
                             window.show().unwrap();
                             window.center().unwrap();
                             window.set_focus().unwrap();
