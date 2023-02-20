@@ -1,6 +1,6 @@
 use std::{
-    fs::{self, File},
-    io::Write,
+    fs::{self, File, OpenOptions},
+    io::{Result, Write},
 };
 
 use super::config;
@@ -67,4 +67,16 @@ fn get_storage_path(storage: &String) -> String {
     }
     storage_path.push_str(&storage);
     storage_path
+}
+
+/// Save content to temp file
+pub fn save_to_tmp_file(storage: &String, content: String) -> Result<()> {
+    let temp_file_path = get_temp_file_path(storage);
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open(temp_file_path)
+        .unwrap();
+    file.write_all(content.as_bytes())
 }

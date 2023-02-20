@@ -4,7 +4,7 @@ use std::{fs, path::Path};
 use home;
 use serde::Deserialize;
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Deserialize, Clone, Default, Debug)]
 pub struct Config {
     pub storage: String,
     pub shortcut: String,
