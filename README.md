@@ -3,8 +3,13 @@
 - [x] Open with shortcut (Ctrl+Shift+O)
 - [x] Config file
 
+# Demo
+![Demo](./storage/demo.gif)
+
 # Configs
 - Location: ~/.config/qmnote/config.toml
+- Default Config Can Found in: [config.toml](./storage/config.toml)
+
 
 # Check ideas for the project
 [Idea](./.idea/roadmap.md)
