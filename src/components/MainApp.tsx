@@ -68,7 +68,8 @@ const MainApp: React.FC = () => {
                     value={text}
                     onChange={(value) => setText(value)}
                     style={{
-                        height: "100vh",
+                        minHeight: "100vh",
+                        paddingTop: "50px",
                     }}
                     inputStyle={{
                         height: "100vh",

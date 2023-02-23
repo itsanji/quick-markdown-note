@@ -31,7 +31,6 @@ const MarkDownInput: React.FC<MarkDownInputProps> = (props) => {
                 className="markdown-container"
                 style={{
                     position: "relative",
-                    minHeight: 150,
                     padding: "5px",
                     ...style,
                 }}
@@ -48,7 +47,6 @@ const MarkDownInput: React.FC<MarkDownInputProps> = (props) => {
                             border: "none",
                             padding: "10px 5px 5px 5px",
                             width: "100%",
-                            minHeight: 150,
                             fontSize: fontSize,
                             ...inputStyle,
                         }}
@@ -59,7 +57,7 @@ const MarkDownInput: React.FC<MarkDownInputProps> = (props) => {
                             border: "none",
                             minHeight: 150,
                             padding: 5,
-                            height: "100%",
+                            height: "80vh",
                             fontSize: fontSize,
                         }}
                         onClick={() => {
