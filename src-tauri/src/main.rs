@@ -30,14 +30,6 @@ fn main() {
 
     tauri::Builder::default()
         .plugin(tauri_plugin_positioner::init())
-        .on_window_event(|event| match event.event() {
-            // Run in background
-            tauri::WindowEvent::CloseRequested { api, .. } => {
-                api.prevent_close();
-                event.window().hide().unwrap();
-            }
-            _ => {}
-        })
         .manage(app_state)
         .invoke_handler(tauri::generate_handler![
             cmd::greet,
@@ -45,12 +37,11 @@ fn main() {
             cmd::get_temp_content,
             cmd::temp_saving,
         ])
-        .setup(|app| {
+        .setup(|_app| {
             #[cfg(debug_assertions)] // only include this code on debug builds
             {
-                let window = app.get_window("main").unwrap();
+                let window = _app.get_window("main").unwrap();
                 window.open_devtools();
-                // window.close_devtools();
             }
             Ok(())
         })
@@ -64,15 +55,29 @@ fn main() {
                 app_handle
                     .global_shortcut_manager()
                     .register(app_conf.shortcut.as_str(), move || {
-                        for (title, window) in app_handle.windows() {
-                            println!("{}", title);
+                        for (_, window) in app_handle.windows() {
                             window.show().unwrap();
-                            window.center().unwrap();
                             window.set_focus().unwrap();
                             let _ = window.move_window(Position::TopRight);
                         }
                     })
                     .unwrap();
+            }
+            tauri::RunEvent::WindowEvent {
+                label,
+                event: win_evt,
+                ..
+            } => match win_evt {
+                tauri::WindowEvent::CloseRequested { api, .. } => {
+                    let win = app_handle.get_window(label.as_str()).unwrap();
+                    win.hide().unwrap();
+                    api.prevent_close();
+                }
+                _ => {}
+            },
+            // keep event loop to listening to tray event
+            tauri::RunEvent::ExitRequested { api, .. } => {
+                api.prevent_exit();
             }
             _ => {}
         })
