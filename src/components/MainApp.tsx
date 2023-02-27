@@ -40,8 +40,9 @@ const MainApp: React.FC = () => {
             }, 1000);
         }
 
-        // ANCHOR update tmp file content when user close the app
-        const unlistener = appWindow.onCloseRequested(() => {
+        // // ANCHOR update tmp file content when user close the app
+        const unlistener = appWindow.onCloseRequested((event) => {
+            event.preventDefault();
             updateToFile(text);
         });
 
