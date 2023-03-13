@@ -1,5 +1,6 @@
 import "./App.css";
 import "react-toastify/dist/ReactToastify.min.css";
+import "tippy.js/dist/tippy.css";
 import { useEffect, useState } from "react";
 import { appWindow } from "@tauri-apps/api/window";
 import { moveWindow, Position } from "tauri-plugin-positioner-api";
