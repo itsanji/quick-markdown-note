@@ -21,6 +21,7 @@ async function hideAppInsteadOfClose(evt: KeyboardEvent) {
 function App() {
     const [fontSize, setFontSize] = useState(20);
     const [isEditMode, setIsEditMode] = useState(false);
+    const [isLock, setIsLock] = useState(false);
 
     // SECTION App setups
     useEffect(() => {
@@ -46,20 +47,11 @@ function App() {
             }
         });
 
-        // ANCHOR toggle edit/view mode with esc key
-        const escListener = (evt: KeyboardEvent) => {
-            if (evt.key === "Escape") {
-                setIsEditMode((prev) => !prev);
-            }
-        };
-
         // ANCHOR move window to top right corner
         moveWindow(Position.TopRight);
-        document.addEventListener("keydown", escListener);
         document.addEventListener("keydown", hideAppInsteadOfClose);
         document.addEventListener("keydown", changeFontSize);
         return () => {
-            document.removeEventListener("keydown", escListener);
             document.removeEventListener("keydown", changeFontSize);
             document.removeEventListener("keydown", hideAppInsteadOfClose);
             unlisten.then((f) => f());
@@ -67,12 +59,35 @@ function App() {
     }, []);
     // !SECTION
 
+    // this event is separate from the upper one because
+    // this event must be reset once isLock state is changed
+    useEffect(() => {
+        const setupLocalShortcut = (evt: KeyboardEvent) => {
+            // ANCHOR toggle edit/view mode with esc key
+            if (evt.key === "Escape" && !isLock) {
+                setIsEditMode((prev) => !prev);
+            }
+
+            // ANCHOR toggle lock mode with ctrl + l
+            if (evt.key === "l" && (evt.ctrlKey || evt.metaKey)) {
+                setIsLock((prev) => !prev);
+            }
+        };
+
+        document.addEventListener("keydown", setupLocalShortcut);
+        return () => {
+            document.removeEventListener("keydown", setupLocalShortcut);
+        };
+    }, [isLock]);
+
     return (
         <GlobalContext.Provider
             value={{
                 fontSize,
                 updateFontSize: setFontSize,
                 isEditMode,
+                isLock,
+                setIsLock,
                 setIsEditMode,
                 homeDir: homeDir(),
             }}

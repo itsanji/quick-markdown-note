@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { VscEdit, VscPreview } from "react-icons/vsc";
+import { BiLock, BiLockOpen } from "react-icons/bi";
 import { GlobalContext } from "../context/GlobalContext";
 import { invoke } from "@tauri-apps/api";
 
@@ -8,12 +9,10 @@ interface ToolBarProps {
 }
 
 const ToolBar: React.FC<ToolBarProps> = ({}) => {
-    const { isEditMode, setIsEditMode, fontSize } = useContext(GlobalContext);
+    const { isEditMode, setIsEditMode, fontSize, isLock, setIsLock } = useContext(GlobalContext);
 
     const handleClick = () => {
-        invoke("get_tmp_content").then((payload) => {
-            console.log(payload);
-        });
+        setIsLock(!isLock);
     };
 
     return (
@@ -22,11 +21,14 @@ const ToolBar: React.FC<ToolBarProps> = ({}) => {
             <button
                 type="button"
                 onClick={() => {
-                    setIsEditMode(!isEditMode);
+                    if (!isLock) {
+                        setIsEditMode(!isEditMode);
+                    }
                 }}
             >
                 {isEditMode ? <VscPreview /> : <VscEdit />}
             </button>
+            <button onClick={handleClick}>{isLock ? <BiLock color="red" /> : <BiLockOpen />}</button>
             <button onClick={handleClick}>Click</button>
         </div>
     );
