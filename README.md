@@ -1,5 +1,6 @@
 # Install
-- See [Realse Page](https://github.com/anjiboss/quick-markdown-note/releases)
+- Binary File: [Release Page](https://github.com/anjiboss/quick-markdown-note/releases)
+- Build From Source: https://tauri.app/v1/guides/building/
 
 # Demo
 ![Demo](./storage/demo.gif)
