@@ -14,7 +14,7 @@ interface MarkDownInputProps {
 const MarkDownInput: React.FC<MarkDownInputProps> = (props) => {
     const { value, onChange, style, autofocus = false, inputStyle = {} } = props;
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const { fontSize, isEditMode, setIsEditMode } = useContext(GlobalContext);
+    const { fontSize, isEditMode, setIsEditMode, isLock } = useContext(GlobalContext);
 
     // Focus on textarea when edit mode
     useEffect(() => {
@@ -61,7 +61,9 @@ const MarkDownInput: React.FC<MarkDownInputProps> = (props) => {
                             fontSize: fontSize,
                         }}
                         onClick={() => {
-                            setIsEditMode(true);
+                            if (!isLock) {
+                                setIsEditMode(true);
+                            }
                         }}
                     >
                         <MarkdownCore>{value}</MarkdownCore>
