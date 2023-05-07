@@ -2,6 +2,7 @@ interface ResponsePayload {
     ok: boolean;
     message: string;
     data: any;
+    error: any;
 }
 
 interface User {

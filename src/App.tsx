@@ -36,8 +36,9 @@ function App() {
         customAxiosInstance
             .post(`${import.meta.env.VITE_API_URL}/auth/token/access`)
             .then((res) => {
-                console.log(res.data);
-                // if (res)
+                if (res.data.ok) {
+                    setLogged(true);
+                }
             })
             .catch((e: AxiosError) => {
                 console.log(e.response);

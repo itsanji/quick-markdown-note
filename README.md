@@ -2,6 +2,13 @@
 - Binary File: [Release Page](https://github.com/anjiboss/quick-markdown-note/releases)
 - Build From Source: https://tauri.app/v1/guides/building/
 
+# Syncing Backend:
+You can sync your note with your own deployed server.
+
+Deploy your server with [qmnote-server](https://github.com/anjiboss/qmnote-backend) repo.
+
+Set server url to [env file](./.env.example) ~~or config file(not yet implemented)~~ .
+
 # Demo
 ![Demo](./storage/demo.gif)
 
@@ -46,7 +53,7 @@
 - [ ] Save to file
 - [ ] fix style
 - [x] add toolbar
-- [ ] sync with server
+- [ ] sync with server ( currently working on )
 - [ ] add mobile support
 - [ ] Logs
 - [ ] VIM movement key
