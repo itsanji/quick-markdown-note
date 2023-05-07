@@ -3,6 +3,10 @@ import ReactModal from "react-modal";
 import { GlobalContext } from "../context/GlobalContext";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
+import { getStorage, setStorage } from "../utils/storage";
+import UserInfoCard from "./UserInfoCard";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 interface LoginModalProps {
     children?: React.ReactNode;
@@ -12,6 +16,35 @@ interface LoginModalProps {
 const AuthModal: React.FC<LoginModalProps> = ({ modalState }) => {
     const [isOpenModal, setOpenModal] = modalState;
     const { logged, setLogged } = useContext(GlobalContext);
+
+    const logout = () => {
+        const refreshToken = getStorage("refreshToken");
+        if (!refreshToken.refreshToken) {
+            setLogged(false);
+            setStorage("accessToken", "");
+            toast.warn("You are not logged in.");
+            return;
+        }
+        axios({
+            url: `${import.meta.env.VITE_API_URL}/auth/token/logout`,
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${refreshToken.refreshToken}`,
+            },
+        })
+            .then(({ data }) => {
+                console.log(data);
+                toast.success("Logout successfully.");
+            })
+            .catch((e) => {
+                console.log(e);
+                toast.warn("some error occured. but u logged out anyway");
+            });
+        setStorage("accessToken", "");
+        setStorage("refreshToken", "");
+        setLogged(false);
+    };
+
     return (
         <>
             <ReactModal
@@ -35,7 +68,12 @@ const AuthModal: React.FC<LoginModalProps> = ({ modalState }) => {
             >
                 <div>
                     {logged ? (
-                        <>{/* User card and logout */}</>
+                        <>
+                            <UserInfoCard />
+                            <div style={{ width: "100%", display: "flex", justifyContent: "center", marginTop: 20 }}>
+                                <button onClick={logout}>Logout</button>
+                            </div>
+                        </>
                     ) : (
                         <>
                             <LoginForm

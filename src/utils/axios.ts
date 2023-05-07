@@ -10,7 +10,6 @@ const AuthAPI = `${import.meta.env.VITE_API_URL}/auth`;
 customAxiosInstance.interceptors.request.use(
     async (config) => {
         const accessToken = getStorage("accessToken");
-        console.log(accessToken);
         if (!accessToken.accessToken) {
             throw new Error("Access Token Not Found");
         } else {

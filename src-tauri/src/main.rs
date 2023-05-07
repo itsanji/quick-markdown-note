@@ -58,7 +58,7 @@ fn main() {
                         for (_, window) in app_handle.windows() {
                             window.show().unwrap();
                             window.set_focus().unwrap();
-                            let _ = window.move_window(Position::TopRight);
+                            // let _ = window.move_window(Position::TopRight);
                         }
                     })
                     .unwrap();

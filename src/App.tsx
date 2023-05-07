@@ -41,7 +41,7 @@ function App() {
             })
             .catch((e: AxiosError) => {
                 console.log(e.response);
-                toast.warning("You are not logged in");
+                toast.warning("You are not logged in. File will only save locally.");
             });
 
         // ANCHOR Change apps font size with ctrl + [] keys
