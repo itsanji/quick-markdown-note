@@ -31,11 +31,14 @@ textarea:focus {
 button {
     background-color: #e7ebf0;
     color: #000000;
-    padding: 8px 12px;
+    padding: 5px 5px 1px 5px;
     margin: 8px 0;
     border: none;
     cursor: pointer;
     border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 input[type="number"] {
