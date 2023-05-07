@@ -35,3 +35,18 @@
 
 # Workflow:
 - [Save file](./.idea/saving-file.excalidraw)
+
+# Roadmap
+- [x] trigger open with shortcut (current shortcut: ctrl+shift+u)
+- [x] markdown input
+- [x] toggle markdown preview button
+- [x] Config file ([default](./../storage/qmnote.toml))
+- [x] Save to tmp file 
+- [x] Lock mode ( lock to edit or preview so clicking won't toggle mode )
+- [ ] Save to file
+- [ ] fix style
+- [x] add toolbar
+- [ ] sync with server
+- [ ] add mobile support
+- [ ] Logs
+- [ ] VIM movement key
