@@ -2,6 +2,8 @@ import React from "react";
 import { homeDir } from "@tauri-apps/api/path";
 
 interface IGlobalContext {
+    logged: boolean;
+    setLogged: (arg: boolean) => void;
     fontSize: number;
     updateFontSize: React.Dispatch<React.SetStateAction<number>>;
     isEditMode: boolean;
@@ -19,4 +21,6 @@ export const GlobalContext = React.createContext<IGlobalContext>({
     setIsLock: () => {},
     setIsEditMode: () => {},
     homeDir: homeDir(),
+    logged: false,
+    setLogged: () => {},
 });

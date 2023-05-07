@@ -8,6 +8,10 @@ import MainApp from "./components/MainApp";
 import { GlobalContext } from "./context/GlobalContext";
 import ToolBar from "./components/ToolBar";
 import { homeDir } from "@tauri-apps/api/path";
+import AuthModal from "./components/LoginModal";
+import { ToastContainer, toast } from "react-toastify";
+import { customAxiosInstance } from "./utils/axios";
+import { AxiosError } from "axios";
 
 // ANCHOR hide app instead of close
 async function hideAppInsteadOfClose(evt: KeyboardEvent) {
@@ -23,9 +27,23 @@ function App() {
     const [fontSize, setFontSize] = useState(20);
     const [isEditMode, setIsEditMode] = useState(false);
     const [isLock, setIsLock] = useState(false);
+    const [isLogged, setLogged] = useState(false);
+    // Controlling login modal, can set w/ either button or inside modal component
+    const [isOpenModal, setOpenModal] = useState(false);
 
     // SECTION App setups
     useEffect(() => {
+        customAxiosInstance
+            .post(`${import.meta.env.VITE_API_URL}/auth/token/access`)
+            .then((res) => {
+                console.log(res.data);
+                // if (res)
+            })
+            .catch((e: AxiosError) => {
+                console.log(e.response);
+                toast.warning("You are not logged in");
+            });
+
         // ANCHOR Change apps font size with ctrl + [] keys
         function changeFontSize(evt: KeyboardEvent) {
             const { key } = evt;
@@ -60,7 +78,7 @@ function App() {
     }, []);
     // !SECTION
 
-    // this event is separate from the upper one because
+    // this effect is separate from the upper one because
     // this event must be reset once isLock state is changed
     useEffect(() => {
         const setupLocalShortcut = (evt: KeyboardEvent) => {
@@ -91,10 +109,14 @@ function App() {
                 setIsLock,
                 setIsEditMode,
                 homeDir: homeDir(),
+                logged: isLogged,
+                setLogged: (arg) => setLogged(arg),
             }}
         >
+            <ToastContainer />
             <div className="container">
-                <ToolBar />
+                <AuthModal modalState={[isOpenModal, setOpenModal]} />
+                <ToolBar modalState={[isOpenModal, setOpenModal]} />
                 <MainApp />
             </div>
         </GlobalContext.Provider>
